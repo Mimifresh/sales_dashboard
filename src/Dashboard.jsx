@@ -6,16 +6,15 @@ function Dashboard() {
         fetchMatrix()
     }, [])
     async function fetchMatrix(){
-    const responce = await supabase
+    const response = await supabase
     .from('sales_deals')
     .select(
-        `name,
-        value
-        `,
+      `
+      name,
+      value.sum()
+      `,
     )
-    .order('value', { ascending: false })
-    .limit(1)
-    console.log(responce);
+    console.log(response)
     }
   return (
     <div className="dashboard-wrapper">
