@@ -1,12 +1,17 @@
 import supabase from "./supabase-client";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { Charts } from "react-charts";
 function Dashboard() {
+
+  const [matrix, setMatrix] = useState([])
+
     useEffect(()=>{
         fetchMatrix()
     }, [])
+
+
     async function fetchMatrix(){
-    const response = await supabase
+    const { data, error} = await supabase
     .from('sales_deals')
     .select(
       `
@@ -14,7 +19,11 @@ function Dashboard() {
       value.sum()
       `,
     )
-    console.log(response)
+    if (error) {
+      throw error
+    }
+    console.log(data)
+    setMatrix(data)
     }
   return (
     <div className="dashboard-wrapper">
