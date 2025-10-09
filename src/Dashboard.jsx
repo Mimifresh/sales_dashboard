@@ -1,6 +1,7 @@
 import supabase from "./supabase-client";
 import { useEffect, useState } from "react";
 import { Chart } from "react-charts";
+import Form from "./Form";
 function Dashboard() {
 
   const [matrix, setMatrix] = useState([])
@@ -17,7 +18,9 @@ function Dashboard() {
           table: 'sales_deals'  
         },
         (payload) => {
-          fetchMetrics();
+          fetchMatrix();
+          console.log(payload)
+          
         })
       .subscribe();
  
@@ -103,6 +106,7 @@ function Dashboard() {
           />
         </div>
       </div>
+      <Form matrix={matrix} />
     </div>
   );
 }
