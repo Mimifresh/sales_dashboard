@@ -1,4 +1,25 @@
+import { useActionState } from "react";
+import React from "react";
+import supabase from "./supabase-client";
+
 function Form({ matrix }) {
+    const [error, submitAction, isPending] = useActionState(
+    async (previousState, formData) => { 
+      const newDeal = {
+        name: formData.get('name'),
+        value: formData.get('value'),
+      };
+      console.log(newDeal);
+      const { error } = await supabase.from('sales_deals').insert(newDeal);
+      if (error) {
+        console.error('Error adding deal: ', error.message);
+        return new Error('Failed to add deal');
+      }
+
+      return null;
+    },
+    null // Initial state
+  );
 
   const generateOptions = () => {
     return matrix.map((metric) => (
@@ -11,6 +32,7 @@ function Form({ matrix }) {
   return (
     <div className="add-form-container">
       <form
+        action={submitAction}
         aria-label="Add new sales deal"
         aria-describedby="form-description"
       >
@@ -26,8 +48,8 @@ function Form({ matrix }) {
             name="name"
             defaultValue={matrix?.[0]?.name || ''}
             aria-required="true"
-            // aria-invalid=
-            // disabled=
+            aria-invalid={error ? "true" : "false"}
+            disabled={isPending}
           >
             {generateOptions()}
           </select>
@@ -44,23 +66,27 @@ function Form({ matrix }) {
             min="0"
             step="10"
             aria-required="true"
-            // aria-invalid=
+            aria-invalid={error ? "true" : "false"}
             aria-label="Deal amount in dollars"
-            // disabled=
+            disabled={isPending}
           />
         </label>
 
         <button 
           type="submit" 
-          // disabled=
-          // aria-busy=
+          disabled={isPending}
+          aria-busy={isPending}
         >
           Add Deal
-          {/*'Adding deal' when pending*/}
+          {isPending ? 'Adding...' : 'Add Deal'}
         </button>
       </form>
 
-      {/* Error message */}
+      {error && (
+        <div role="alert" className="error-message">
+          {error.message}
+        </div>
+      )}
     </div>
   );
 };
