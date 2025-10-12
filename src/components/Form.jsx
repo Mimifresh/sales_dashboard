@@ -1,6 +1,6 @@
 import { useActionState } from "react";
 import React from "react";
-import supabase from "./supabase-client";
+import supabase from "../supabase-client";
 
 function Form({ matrix }) {
     const [error, submitAction, isPending] = useActionState(
