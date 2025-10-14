@@ -4,7 +4,12 @@ import { useActionState } from 'react';
 const Signin = () => {
     const { session } = useAuth();
     console.log(session);
-
+    const [error, isPending, submit] = useActionState(
+        async (previousState, formData) => {
+            const email = formData.get('email');
+            const password = formData.get('password');
+        }, null
+    );
 
     return(
         <>
