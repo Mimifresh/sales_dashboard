@@ -4,7 +4,7 @@ import { useActionState } from 'react';
 const Signin = () => {
     const { session } = useAuth();
     console.log(session);
-    const [error, isPending, submit] = useActionState(
+    const [error, submitAction, isPending] = useActionState(
         async (previousState, formData) => {
             const email = formData.get('email');
             const password = formData.get('password');
@@ -16,7 +16,7 @@ const Signin = () => {
             <h1 className="landing-header">Signin Page</h1>
             <div>
                 <form
-                    action={useActionState}
+                    action={submitAction}
                     aria-label='signin form'
                     aria-describedby='form-description'
                 >
