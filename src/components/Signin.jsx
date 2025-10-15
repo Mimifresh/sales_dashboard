@@ -8,6 +8,27 @@ const Signin = () => {
         async (previousState, formData) => {
             const email = formData.get('email');
             const password = formData.get('password');
+
+        try {
+            //2. Call our sign-in function
+            // const {
+            //   success,
+            //   data,
+            //   error: signInError,
+            // } = await sign in function (email, password);
+
+            if (signInError) {
+            return new Error(signInError);
+            }
+            if (success && data?.session) {
+            //Navigate to /dashboard
+            return null;
+            }
+            return null;
+        } catch (error) {
+            console.error('Sign in error: ', error.message);
+            return new Error('An unexpected error occurred. Please try again.');
+        }
         }, null
     );
 
@@ -33,6 +54,9 @@ const Signin = () => {
                         required
                         aria-required='true'
                         placeholder=''
+                        aria-invalid={error ? 'true' : 'false'}
+                        aria-describedby={error ? 'signin-error' : undefined}
+                        disabled={isPending}
                     />
                     <input
                         id="password"
@@ -41,11 +65,25 @@ const Signin = () => {
                         required
                         aria-required='true'
                         placeholder=''
+                        aria-invalid={error ? 'true' : 'false'}
+                        aria-describedby={error ? 'signin-error' : undefined}
+                        disabled={isPending}
                     />
                     <button
-                        type="submit">
-                        Sign in
+                        type="submit"
+                        aria-busy={isPending}
+                    >
+                        {isPending ? 'Signing in...' : 'Sign in'}
                     </button>
+                    {error && (
+                        <div
+                            role="alert"
+                            id="signin-error"
+                            className="error-message"
+                        >
+                            {error.message}
+                        </div>
+                    )}
                 </form>
             </div>
         </>
