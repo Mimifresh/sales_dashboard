@@ -211,7 +211,7 @@ input:disabled {
   background-color: white;
   color: #082c1b;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  box-sizing: border-box; /* Ensures padding is included in width calculation */
+  box-sizing: border-box;
 }
 
 .sign-form-container .form-input:focus {
